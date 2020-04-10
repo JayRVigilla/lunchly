@@ -83,6 +83,18 @@ class Customer {
     return `${this.firstName} ${this.lastName}`
     // return "Bob"
   }
+
+  // figure out what [something] on line 93 means
+  // are the quotes arouns '%$1%' on line 93 a problem?
+  static async searchCustomer(){
+    const searchQ = await db.query(
+      `SELECT first_name, last_name
+      FROM customers
+      WHERE (lower(first_name) LIKE lower('%$1%')) OR (lower(last_name) LIKE lower('%$1%'))
+      `, [req.params.[something]]
+    )
+  }
+
 }
 
 
