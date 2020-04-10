@@ -86,15 +86,54 @@ class Customer {
 
   // figure out what [something] on line 93 means
   // are the quotes arouns '%$1%' on line 93 a problem?
-  static async searchCustomer(){
+  static async searchCustomer(req){
     const searchQ = await db.query(
-      `SELECT first_name, last_name
+      `SELECT id, first_name AS "firstName", last_name AS "lastName"
       FROM customers
-      WHERE (lower(first_name) LIKE lower('%$1%')) OR (lower(last_name) LIKE lower('%$1%'))
-      `, [req.params.[something]]
-    )
+      WHERE (lower(first_name) LIKE lower($1)) OR (lower(last_name) LIKE lower($1))
+      `, [`%${req.query.searchQuery}%`]
+    );
+
+    if (searchQ.length === 0) {
+      const err = new Error(`No results for: ${req.query.searchQuery}`);
+      err.status = 404;
+      throw err;
+    }
+
+    return searchQ.rows.map(c => new Customer(c));
   }
 
+  static async topTenCustomers(){
+    const topTen = await db.query(
+      `SELECT
+        c.first_name AS "firstName",
+        c.last_name AS "lastName",
+        c.id,
+        COUNT(r.customer_id) AS "count"
+      FROM
+        customers AS c
+      JOIN
+        reservations AS r
+      ON
+        c.id = r.customer_id
+      GROUP BY
+        c.first_name,
+        c.last_name,
+        c.id
+      ORDER BY
+        COUNT(r.customer_id) DESC
+      LIMIT 10;
+      `
+    );
+    debugger;
+    if (topTen.length === 0) {
+      const err = new Error(`No customers? weird. Better talk with the webmaster for that: @Joel`);
+      err.status = 404;
+      throw err;
+    }
+
+    return topTen.rows.map(c => new Customer(c));
+  }
 }
 
 

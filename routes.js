@@ -10,9 +10,34 @@ const router = new express.Router();
 /** Homepage: show list of customers. */
 
 router.get("/", async function(req, res, next) {
+  let custTitle = `All Customers`;
   try {
     const customers = await Customer.all();
-    return res.render("customer_list.html", { customers });
+    return res.render("customer_list.html", { customers, custTitle });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+/** Search Results: show list of customer that match search query */
+
+router.get("/search", async function(req, res, next) {
+  let custTitle = `Search Results for: ${req.query.searchQuery}`;
+  try {
+    const customers = await Customer.searchCustomer(req);
+    return res.render("customer_list.html", { customers, custTitle });
+  } catch (err) {
+    return next(err);
+  }
+});
+
+/** Top Ten: show list of top 10 customers. */
+
+router.get("/topten", async function(req, res, next) {
+  let custTitle = 'Top 10 Customers!';
+  try {
+    const customers = await Customer.topTenCustomers();
+    return res.render("customer_list.html", { customers, custTitle });
   } catch (err) {
     return next(err);
   }

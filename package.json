@@ -1,11 +1,11 @@
 {
   "name": "lunchly",
   "version": "1.0.0",
-  "description": "",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "debug": "nodemon --inspect server.js"
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +16,14 @@
     "nodemon": "^2.0.3",
     "nunjucks": "^3.1.3",
     "pg": "^7.4.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JayRVigilla/lunchly.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JayRVigilla/lunchly/issues"
+  },
+  "homepage": "https://github.com/JayRVigilla/lunchly#readme",
+  "description": ""
 }
