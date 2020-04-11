@@ -1,4 +1,4 @@
-\c lunchly 
+\c lunchly_test 
 
 DROP TABLE IF EXISTS reservations;
 DROP TABLE IF EXISTS customers;

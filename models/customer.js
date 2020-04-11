@@ -125,7 +125,6 @@ class Customer {
       LIMIT 10;
       `
     );
-    debugger;
     if (topTen.length === 0) {
       const err = new Error(`No customers? weird. Better talk with the webmaster for that: @Joel`);
       err.status = 404;
